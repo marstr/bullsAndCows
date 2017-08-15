@@ -9,12 +9,7 @@ import (
 )
 
 func main() {
-	answer := bullsAndCows.Number{
-		uint8(rand.Intn(10)),
-		uint8(rand.Intn(10)),
-		uint8(rand.Intn(10)),
-		uint8(rand.Intn(10)),
-	}
+	answer := generateNoRepeats()
 
 	guesses := 0
 	var empty bullsAndCows.Number
@@ -44,4 +39,24 @@ func main() {
 	}
 
 	fmt.Printf("You deduced the answer in %d guesses\n", guesses)
+}
+
+func generateRepeats() (generated bullsAndCows.Number) {
+	generated = bullsAndCows.Number{
+		uint8(rand.Intn(10)),
+		uint8(rand.Intn(10)),
+		uint8(rand.Intn(10)),
+		uint8(rand.Intn(10)),
+	}
+	return
+}
+
+func generateNoRepeats() (generated bullsAndCows.Number) {
+	options := []uint8{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	for i := len(generated) - 1; i >= 0; i-- {
+		selected := rand.Intn(len(options))
+		generated[i] = options[selected]
+		options = append(options[:selected], options[selected+1:]...)
+	}
+	return
 }
