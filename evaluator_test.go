@@ -27,9 +27,13 @@ func Test_ParseNumber(t *testing.T) {
 				t.Fail()
 			}
 
-			if tc.err != nil && actualErr.Error() != tc.err.Error() {
-				t.Logf("got: %v want: %v", actualErr, tc.err)
-				t.Fail()
+			if tc.err != nil {
+				if actualErr.Error() != tc.err.Error() {
+					t.Logf("got: %v want: %v", actualErr, tc.err)
+					t.Fail()
+				}
+			} else if actualErr != nil {
+				t.Error(actualErr)
 			}
 		})
 	}
@@ -66,6 +70,7 @@ func TestNumber_IsValid(t *testing.T) {
 		{Number{1, 2, 3, 4}, true},
 		{Number{0, 0, 8, 9}, false},
 		{Number{9, 0, 9, 1}, false},
+		{Number{0, 4, 9, 7}, true},
 	}
 
 	for _, tc := range cases {

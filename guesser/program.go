@@ -12,7 +12,6 @@ func main() {
 	for i := 0; i < 10000; i++ {
 		parsed, err := bc.ParseNumber(fmt.Sprint(i))
 		if err == nil {
-			fmt.Printf("Adding Possiblity: %q\n", parsed)
 			remaining = append(remaining, parsed)
 		}
 	}

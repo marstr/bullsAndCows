@@ -3,6 +3,7 @@ package bullsAndCows
 import (
 	"bytes"
 	"fmt"
+	"strconv"
 )
 
 // Number represents a valid guess in the game of Bulls and Cows
@@ -64,7 +65,7 @@ func ParseNumber(raw string) (result Number, err error) {
 		}
 	}()
 
-	_, err = fmt.Sscan(raw, &x)
+	x, err = strconv.Atoi(raw)
 	if err != nil {
 		return
 	}
@@ -80,7 +81,7 @@ func ParseNumber(raw string) (result Number, err error) {
 	}
 
 	if !result.IsValid() {
-		err = fmt.Errorf("%s contains a duplicate digit", raw)
+		err = fmt.Errorf("%s contains a duplicate digit", result.String())
 		return
 	}
 
