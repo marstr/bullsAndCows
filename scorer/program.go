@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"math/rand"
 	"os"
@@ -9,7 +10,19 @@ import (
 )
 
 func main() {
-	answer := generateNoRepeats()
+
+	useRepeats := flag.Bool("r", false, "Use `r` to signify that repeated digits are acceptable.")
+	flag.Parse()
+
+	var generator func() bullsAndCows.Number
+
+	if *useRepeats {
+		generator = generateRepeats
+	} else {
+		generator = generateNoRepeats
+	}
+
+	answer := generator()
 
 	guesses := 0
 	var empty bullsAndCows.Number
@@ -21,7 +34,10 @@ func main() {
 			var err error
 			var raw string
 			fmt.Print("Guess: ")
-			fmt.Scanln(&raw)
+			if read, _ := fmt.Scanln(&raw); read == 0 {
+				fmt.Println("The answer was: ", answer.String())
+				return
+			}
 			guess, err = bullsAndCows.ParseNumber(raw)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
